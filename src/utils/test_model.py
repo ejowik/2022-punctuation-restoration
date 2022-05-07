@@ -1,5 +1,4 @@
 import pandas as pd
-#from simpletransformers.ner import NERArgs, NERModel
 from transformers import AutoTokenizer, AutoModelForTokenClassification
 from argparse import ArgumentParser
 import os
@@ -99,8 +98,8 @@ class ModelForInference:
 
     @staticmethod
     def merge_predictions(windows_preds, windows_scores, windows_token_mappings):
-        # TODO: refactor
-        result_size = windows_token_mappings[-1][-2] + 1  # element at -1 corresponds to </s> token, at -2 to last word idx
+
+        result_size = windows_token_mappings[-1][-2] + 1
         results = [0] * result_size
         result_score = [0] * result_size
 
@@ -110,7 +109,7 @@ class ModelForInference:
                 zip(windows_preds, windows_scores, windows_token_mappings):
             for pred, score, word_id in zip(window_preds, window_scores, window_token_mappings):
                 if word_id == prev_word_id:
-                    continue  # only check prediction for first token of the word
+                    continue 
 
                 prev_word_id = word_id
                 if word_id == -1:
@@ -124,8 +123,7 @@ class ModelForInference:
 
     @staticmethod
     def merge_predictions2(windows_preds, windows_scores, windows_token_mappings):
-        # TODO: refactor
-        result_size = windows_token_mappings[-1][-2] + 1  # element at -1 corresponds to </s> token, at -2 to last word idx
+        result_size = windows_token_mappings[-1][-2] + 1
         results = [0] * result_size
         result_score = [-100] * result_size
 
@@ -135,12 +133,11 @@ class ModelForInference:
                 zip(windows_preds, windows_scores, windows_token_mappings):
             first_word_id=min([x for x in window_token_mappings if x>0])
             last_word_id=max(window_token_mappings)
-            #print('first_word_id',first_word_id)
-            #print('last_word_id',last_word_id)
+
             for pred, score, word_id in zip(window_preds, window_scores, window_token_mappings):
                 if word_id == prev_word_id:
-                    continue  # only check prediction for first token of the word
-
+                    continue
+                    
                 prev_word_id = word_id
                 if word_id == -1:
                     continue
@@ -149,7 +146,6 @@ class ModelForInference:
 
                 if pred != 0:
                     context=min(word_id-first_word_id, last_word_id-word_id)
-                    #print('context', context, first_word_id, word_id, last_word_id, pred)
                     if context >= result_score[word_id]:
                         result_score[word_id] = context
                         results[word_id] = pred
@@ -173,7 +169,6 @@ class ModelForInference:
         preds = []
         scores = []
         for batch in data_loader:
-            #print(batch['input_ids'].shape)
             with torch.no_grad():
                 if self.fp16:
                     with amp.autocast():
@@ -186,7 +181,6 @@ class ModelForInference:
                 batch_pred = batch_pred.detach().cpu().numpy()
 
                 scores.extend(batch_score)
-                #batch_pred = torch.argmax(outputs[0], dim=2).detach().cpu().numpy()
                 preds.extend(batch_pred)
 
         offset = 0
@@ -216,7 +210,6 @@ def test_model(path_to_model='best_model', path_to_test='test-A/in.tsv', path_to
 
     model = ModelForInference(path_to_model)
 
-    # pred_labels = ['B', ':', ';', ',', '.', '-', '...', '?', '!']
     pred_labels = ['B', ':', ';', ',', '.', '-', '?', '!']
 
     with open(path_to_test) as f, open(path_to_out, 'w') as out:

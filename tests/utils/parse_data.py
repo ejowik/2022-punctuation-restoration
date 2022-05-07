@@ -1,12 +1,13 @@
+import re
+import sys
 import glob
 import os.path
 import random
 import json
-import re
-import sys
+from typing import List, Tuple
 
 
-def __load_json(path):
+def __load_json(path:str) -> Tuple[str]:
     data = json.load(open(path, encoding="utf-8"))
 
     text = ""
@@ -34,44 +35,19 @@ def __load_json(path):
         text += " "
 
     text_in = text_in.lower()
-    # text_in = re.sub('"', ' " ', text_in)
-    # text_in = re.sub("\+", " + ", text_in)
-
     text_in = re.sub("[,!?.:;-]", " ", text_in)
-
-    # text_in = re.sub(" +", " ", text_in)
-
     text = text.lower()
     text = re.sub("(\? )+", "? ", text)
     text = re.sub("(! )+", "! ", text)
-    # text = re.sub('"-', '"', text)
-    # text = re.sub(" +", " ", text)
-
-    text_exp = text_exp.lower()
-    # text_exp = re.sub("\.\.\.", "…", text_exp)
-    # text_exp = re.sub('"', ' " ', text_exp)
-    # text_exp = re.sub("&quot;", ' " ', text_exp)
-    # text_exp = re.sub("&apos;", "'", text_exp)
-    # text_exp = re.sub("&#93;", "", text_exp)
-    # text_exp = re.sub("&#91;", "", text_exp)
-    # text_exp = re.sub("\+", " + ", text_exp)
     
-    # text_exp = re.sub(r" ([…,!?.:;-])", "\\1", text_exp)
+    text_exp = text_exp.lower()
     text_exp = re.sub(r" ([,!?.:;-])", "\\1", text_exp)
-    # text_exp = re.sub(r"[…,!?.:;-]([^ ])", " \\1", text_exp)
     text_exp = re.sub(r"[,!?.:;-]([^ ])", " \\1", text_exp)
-    # text_exp = re.sub(r" […,!?.:;-] ", " ", text_exp)
     text_exp = re.sub(r" [,!?.:;-] ", " ", text_exp)
-
-    # text_exp = re.sub(" +", " ", text_exp)
-
+    
     text_in = text_exp
-    # text_in = re.sub("([^ ])[…,!?.:;-]( |$)", "\\1 ", text_in)
     text_in = re.sub("([^ ])[,!?.:;-]( |$)", "\\1 ", text_in)
     
-    # text_in = re.sub(" +", " ", text_in)
-    # text_exp = re.sub("…", "...", text_exp)
-
     try:
         assert len(text_in.strip().split(" ")) == len(text_exp.strip().split(" "))
     except AssertionError:
@@ -90,7 +66,7 @@ def __load_json(path):
     return text_in.strip(), text_exp.strip()
 
 
-def __read_names(path):
+def __read_names(path:str) -> List[str]:
     names = []
     for in_line in open(path, encoding="utf-8"):
         if in_line[-1] == "\n":
@@ -100,7 +76,7 @@ def __read_names(path):
     return names
 
 
-def parse_data(train_path, test_path, data, save_path):
+def parse_data(train_path:str, test_path:str, data:List[str], save_path:str) -> None:
     train_names = __read_names(train_path)
     test_names = __read_names(test_path)
 

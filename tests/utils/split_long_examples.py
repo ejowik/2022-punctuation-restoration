@@ -1,7 +1,11 @@
 import pandas as pd
 from transformers import AutoTokenizer
 
-def __split_long_examples(data, tokenizer, max_seq_len=256, stride=0.8):
+def __split_long_examples(
+    data:pd.DataFrame,
+    tokenizer:AutoTokenizer,
+    max_seq_len:int=256,
+    stride: float=0.8) -> pd.DataFrame:
 
     splitted_data = []
 
@@ -47,12 +51,12 @@ def __split_long_examples(data, tokenizer, max_seq_len=256, stride=0.8):
 
 
 def split_long_examples(
-    data_path,
-    out_file,
-    max_seq_len=256,
-    stride=1,
-    tokenizer_path="allegro/herbert-base-cased",
-):
+    data_path:str,
+    out_file:str,
+    max_seq_len:int=256,
+    stride:int=1,
+    tokenizer_path:str="allegro/herbert-base-cased",
+) -> None:
     tokenizer = AutoTokenizer.from_pretrained(tokenizer_path)
     data = pd.read_csv(
         data_path,

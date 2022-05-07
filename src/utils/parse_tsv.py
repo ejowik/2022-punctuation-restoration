@@ -1,7 +1,7 @@
 import sys
+from typing import List, Tuple
 
-
-def __read_times_data(path):
+def __read_times_data(path:str) -> List[Tuple]:
     data = []
     for line in open(path, encoding="utf-8"):
         if line[-1] == "\n":
@@ -17,7 +17,7 @@ def __read_times_data(path):
     return data
 
 
-def __times_after_tokens(path):
+def __times_after_tokens(path:str) -> List[Tuple]:
     data = __read_times_data(path)
     result = []
     for i in range(len(data)):
@@ -32,7 +32,7 @@ def __times_after_tokens(path):
     return result
 
 
-def __match_times(times, expected):
+def __match_times(times:Tuple, expected:List) -> List:
     matched = []
 
     times_text = ""
@@ -43,7 +43,6 @@ def __match_times(times, expected):
 
     index = 0
     for token in expected:
-        # print(token)
         found_index = times_text.find(token.lower(), index)
         if found_index >= 0:
             if found_index in times_indexes:
@@ -57,12 +56,17 @@ def __match_times(times, expected):
 
 
 def parse_tsv(
-    in_path, expected_path, save_path, clntmstmp_dir=None, files_to_ignore=[]
-):
+    in_path:str,
+    expected_path:str,
+    save_path:str,
+    clntmstmp_dir:str=None,
+    files_to_ignore:List=[]
+) -> None:
     out = open(save_path, "w", encoding="utf-8")
 
     for in_line, expected in zip(
-        open(in_path, encoding="utf-8"), open(expected_path, encoding="utf-8")
+        open(in_path, encoding="utf-8"),
+        open(expected_path, encoding="utf-8")
     ):
         if in_line[-1] == "\n":
             in_line = in_line[:-1]
@@ -89,8 +93,6 @@ def parse_tsv(
             else:
                 if in_token == expected_token[:-1]:
                     label = expected_token[-1]
-                # elif in_token == expected_token[:-3] and expected_token[-3:] == "...":
-                #     label = expected_token[-3:]
                 elif in_token == expected_token[:len(in_token)]:
                     label = expected_token[len(in_token)]
                 else:

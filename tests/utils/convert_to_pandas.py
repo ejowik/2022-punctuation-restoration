@@ -4,8 +4,8 @@ import random
 
 
 def convert_to_pandas(
-    data_file, out_file, train_to_test_dev_ratio=0.8, dev_to_test_ratio=0.5, seed=1353
-):
+    data_file:str, out_file:str, train_to_test_dev_ratio:float=0.8, dev_to_test_ratio:float=0.5, seed:int=1353
+) -> None:
     random.seed(seed)
     np.random.seed(seed)
 
@@ -22,12 +22,6 @@ def convert_to_pandas(
                 tags.append([])
                 spaces_after.append([])
                 continue
-
-            # try:
-            #     word, tag, space = line.strip().split("\t")
-            # except:
-            #     word, tag = line.strip().split("\t")
-            #     space = " "
 
             try:
                 word, tag, space = line.strip().split("\t")
