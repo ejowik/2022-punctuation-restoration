@@ -1,7 +1,8 @@
 import sys
 from typing import List, Tuple
 
-def __read_times_data(path:str) -> List[Tuple]:
+
+def __read_times_data(path: str) -> List[Tuple]:
     data = []
     for line in open(path, encoding="utf-8"):
         if line[-1] == "\n":
@@ -17,12 +18,11 @@ def __read_times_data(path:str) -> List[Tuple]:
     return data
 
 
-def __times_after_tokens(path:str) -> List[Tuple]:
+def __times_after_tokens(path: str) -> List[Tuple]:
     data = __read_times_data(path)
     result = []
     for i in range(len(data)):
         start, end, text = data[i]
-        label = text[-1] if text[-1] in ",!?.:;-" else "B"
 
         try:
             br = data[i + 1][0] - end
@@ -32,7 +32,7 @@ def __times_after_tokens(path:str) -> List[Tuple]:
     return result
 
 
-def __match_times(times:Tuple, expected:List) -> List:
+def __match_times(times: Tuple, expected: List) -> List:
     matched = []
 
     times_text = ""
@@ -56,11 +56,11 @@ def __match_times(times:Tuple, expected:List) -> List:
 
 
 def parse_tsv(
-    in_path:str,
-    expected_path:str,
-    save_path:str,
-    clntmstmp_dir:str=None,
-    files_to_ignore:List=[]
+    in_path: str,
+    expected_path: str,
+    save_path: str,
+    clntmstmp_dir: str = None,
+    files_to_ignore: List = []
 ) -> None:
     out = open(save_path, "w", encoding="utf-8")
 

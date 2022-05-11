@@ -1,5 +1,4 @@
 import pandas as pd
-import numpy as np
 import sklearn
 import os
 from simpletransformers.ner import NERArgs, NERModel
@@ -8,7 +7,6 @@ import time
 
 
 labels = ["B", ":", ";", ",", ".", "-", "?", "!"]
-
 
 
 def __merge_data(func, y_true, y_pred, **kwargs):
@@ -89,7 +87,9 @@ def train_model(
     sentences_to_delete = train_data[
         ~train_data.labels.isin(labels)
     ].sentence_id
-    train_data = train_data.loc[~train_data.sentence_id.isin(sentences_to_delete)]
+    train_data = train_data.loc[
+        ~train_data.sentence_id.isin(sentences_to_delete)
+        ]
 
     sentences_to_delete = eval_data[~eval_data.labels.isin(labels)].sentence_id
     eval_data = eval_data.loc[~eval_data.sentence_id.isin(sentences_to_delete)]
@@ -231,5 +231,7 @@ def train_model(
         use_cuda=True if torch.cuda.is_available() else False,
     )
 
-    model.train_model(train_data, output_dir=output_dir, eval_data=eval_data, **metrics)
+    model.train_model(
+        train_data, output_dir=output_dir, eval_data=eval_data, **metrics
+        )
     return ner_args.best_model_dir

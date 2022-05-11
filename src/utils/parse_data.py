@@ -7,7 +7,7 @@ import json
 from typing import List, Tuple
 
 
-def __load_json(path:str) -> Tuple[str]:
+def __load_json(path: str) -> Tuple[str]:
     data = json.load(open(path, encoding="utf-8"))
 
     text = ""
@@ -15,13 +15,13 @@ def __load_json(path:str) -> Tuple[str]:
     text_exp = ""
     for token in data["words"]:
         text += token["word"] + token["punctuation"]
-        if re.match('^[^\w"%]+$', token["word"]):
+        if re.match('^[^\\w"%]+$', token["word"]):
             pass
 
         else:
             text_in += token["word"]
 
-            if token["punctuation"] == "-" and token["space_after"] == False:
+            if token["punctuation"] == "-" and token["space_after"] is False:
                 text_exp += token["word"]
             else:
                 text_exp += token["word"] + token["punctuation"]
@@ -37,17 +37,17 @@ def __load_json(path:str) -> Tuple[str]:
     text_in = text_in.lower()
     text_in = re.sub("[,!?.:;-]", " ", text_in)
     text = text.lower()
-    text = re.sub("(\? )+", "? ", text)
+    text = re.sub("(\\? )+", "? ", text)
     text = re.sub("(! )+", "! ", text)
-    
+
     text_exp = text_exp.lower()
     text_exp = re.sub(r" ([,!?.:;-])", "\\1", text_exp)
     text_exp = re.sub(r"[,!?.:;-]([^ ])", " \\1", text_exp)
     text_exp = re.sub(r" [,!?.:;-] ", " ", text_exp)
-    
+
     text_in = text_exp
     text_in = re.sub("([^ ])[,!?.:;-]( |$)", "\\1 ", text_in)
-    
+
     try:
         assert len(text_in.strip().split(" ")) == len(text_exp.strip().split(" "))
     except AssertionError:
@@ -66,7 +66,7 @@ def __load_json(path:str) -> Tuple[str]:
     return text_in.strip(), text_exp.strip()
 
 
-def __read_names(path:str) -> List[str]:
+def __read_names(path: str) -> List[str]:
     names = []
     for in_line in open(path, encoding="utf-8"):
         if in_line[-1] == "\n":
@@ -76,7 +76,9 @@ def __read_names(path:str) -> List[str]:
     return names
 
 
-def parse_data(train_path:str, test_path:str, data:List[str], save_path:str) -> None:
+def parse_data(
+        train_path: str, test_path: str, data: List[str], save_path: str
+        ) -> None:
     train_names = __read_names(train_path)
     test_names = __read_names(test_path)
 

@@ -1,11 +1,12 @@
 import pandas as pd
 from transformers import AutoTokenizer
 
+
 def __split_long_examples(
-    data:pd.DataFrame,
-    tokenizer:AutoTokenizer,
-    max_seq_len:int=256,
-    stride: float=0.8) -> pd.DataFrame:
+        data: pd.DataFrame,
+        tokenizer: AutoTokenizer,
+        max_seq_len: int = 256,
+        stride: float = 0.8) -> pd.DataFrame:
 
     splitted_data = []
 
@@ -16,7 +17,9 @@ def __split_long_examples(
         token_lens = []
         chunk_id = 0
 
-        for word, label, space in zip(example.words, example.labels, example.times):
+        for word, label, space in zip(
+                example.words, example.labels, example.times
+                ):
             tokenized_word = tokenizer.tokenize(word)
             if tokenized_len + len(tokenized_word) >= max_seq_len - 1:
                 splitted_data.extend(
@@ -51,12 +54,12 @@ def __split_long_examples(
 
 
 def split_long_examples(
-    data_path:str,
-    out_file:str,
-    max_seq_len:int=256,
-    stride:int=1,
-    tokenizer_path:str="allegro/herbert-base-cased",
-) -> None:
+        data_path: str,
+        out_file: str,
+        max_seq_len: int = 256,
+        stride: int = 1,
+        tokenizer_path: str = "allegro/herbert-base-cased",
+        ) -> None:
     tokenizer = AutoTokenizer.from_pretrained(tokenizer_path)
     data = pd.read_csv(
         data_path,

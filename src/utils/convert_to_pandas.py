@@ -4,7 +4,11 @@ import random
 
 
 def convert_to_pandas(
-    data_file:str, out_file:str, train_to_test_dev_ratio:float=0.8, dev_to_test_ratio:float=0.5, seed:int=1353
+    data_file: str,
+    out_file: str,
+    train_to_test_dev_ratio: float = 0.8,
+    dev_to_test_ratio: float = 0.5,
+    seed: int = 1353,
 ) -> None:
     random.seed(seed)
     np.random.seed(seed)
@@ -25,13 +29,13 @@ def convert_to_pandas(
 
             try:
                 word, tag, space = line.strip().split("\t")
-            except:
+            except Exception:
                 try:
                     word, tag = line.strip().split("\t")
                     space = " "
-                except:
+                except Exception:
                     continue
-            
+
             words[-1].append(word)
             tags[-1].append(tag)
             spaces_after[-1].append(space)
