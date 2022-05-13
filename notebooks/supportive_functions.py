@@ -83,4 +83,4 @@ def separate_special_chars(data: pd.DataFrame) -> pd.DataFrame:
 
 
 def rm_consecutive_spaces(string):
-    return re.sub(' +', ' ', string)
+    return re.sub(' {2,}', ' ', string)
