@@ -8,7 +8,7 @@ The results of the work performed have been summarized in the `docs\punctuation_
 
 #### Milestone 2.:
 1. Reiteration of the step of exploratory data analysis aimed at identifying symbols denormalized for the Polish language and identification of recordings for which transcription data is missing.
-2. Data cleaning – i.e. the elimination of symbols denormalized for the Polish language.
+2. Data cleaning â€“ i.e. the elimination of symbols denormalized for the Polish language.
 3. Morphological analysis of the text with the use of Morpheus2 - the main goals were to verify the correctness of data cleaning in terms of the presence of denormalized symbols in the text (also re-checking the balance of classes), analysis of morphosyntactic markers.
 4. Creating a rule-based baseline model - building a dictionary and writing rules writing regex rules that will apply a dictionary approach
 5. Preparation of the first version of the implementation of the proprietary approach on top of existing solutions
@@ -17,7 +17,7 @@ The codes corresponding to the individual requirements have been placed in the f
 1.	`notebooks/eda.ipynb` file
 2.	`notebooks/feature_engineering/data_cleaning.ipynb` file
 3.	`notebooks/feature_engineering/morfeusz.ipynb` file
-4.	`notebooks/baseline/baseline_model.ipynb` file (alongside supporting files for data preparation and cleaning)
+4.	`notebooks/baseline/baseline_model_class.ipynb` file (alongside supporting files for data preparation and cleaning)
 5.	`src/` directory
 
 #### Results:
