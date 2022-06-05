@@ -51,7 +51,7 @@ We can observe that the difference in results between two considered approaches 
 |     ? |   144.0 |                 0.003598 |                 0.023327 |
 |     ! |    20.0 |                 0.000500 |                 0.003240 |
 
-#### Documentation
+#### Documentation:
 
 The final report and presentation of results have been placed in the following locations:
 1.	`docs/NLP Punctuation Restoration Final Report.zip` folder contains both latex and pdf versions of the final report,
